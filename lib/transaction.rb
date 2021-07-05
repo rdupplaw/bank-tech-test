@@ -7,6 +7,8 @@ class Transaction
   def initialize(date:, credit: nil, debit: nil)
     raise 'Transaction cannot have both credit and debit' if credit && debit
 
+    raise 'Transaction must have credit or debit' unless credit || debit
+
     @date = date
     @credit = credit
     @debit = debit

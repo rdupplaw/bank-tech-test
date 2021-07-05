@@ -32,4 +32,8 @@ describe Transaction do
       described_class.new(date: '13-05-2022', credit: 2000, debit: 9000)
     end.to raise_error 'Transaction cannot have both credit and debit'
   end
+
+  it 'raises an error if not given credit or debit' do
+    expect { described_class.new(date: '27-03-1994') }.to raise_error 'Transaction must have credit or debit'
+  end
 end
