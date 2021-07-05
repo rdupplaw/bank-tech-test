@@ -2,10 +2,11 @@
 
 # Stores information about a single transaction
 class Transaction
-  attr_reader :date, :credit
+  attr_reader :date, :credit, :debit
 
-  def initialize(date:, credit:)
+  def initialize(date:, credit:, debit:)
     @date = date
     @credit = credit
+    @debit = debit
   end
 end
