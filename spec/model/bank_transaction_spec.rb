@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'transaction'
+require 'bank_transaction'
 
-describe Transaction do
+describe BankTransaction do
   context 'when given a credit' do
     subject(:credit_transaction) { described_class.new(date: '10-01-2012', credit: 1000, previous_balance: 630) }
 

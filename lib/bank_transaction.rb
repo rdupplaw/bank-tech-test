@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Stores information about a single transaction
-class Transaction
+class BankTransaction
   attr_reader :date, :credit, :debit, :balance
 
   def initialize(date:, previous_balance:, credit: nil, debit: nil)
