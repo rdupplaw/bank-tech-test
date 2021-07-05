@@ -29,6 +29,10 @@ describe Transaction do
     it 'has a debit' do
       expect(debit_transaction.debit).to eq(500)
     end
+
+    it 'has a balance which is equal to given previous balance minus debit' do
+      expect(debit_transaction.balance).to eq(-810)
+    end
   end
 
   it 'raises an error if given both credit and debit' do
@@ -38,6 +42,8 @@ describe Transaction do
   end
 
   it 'raises an error if not given credit or debit' do
-    expect { described_class.new(date: '27-03-1994', previous_balance: 0) }.to raise_error 'Transaction must have credit or debit'
+    expect do
+      described_class.new(date: '27-03-1994', previous_balance: 0)
+    end.to raise_error 'Transaction must have credit or debit'
   end
 end

@@ -4,7 +4,7 @@
 class Transaction
   attr_reader :date, :credit, :debit, :balance
 
-  def initialize(date:, credit: nil, debit: nil, previous_balance:)
+  def initialize(date:, previous_balance:, credit: nil, debit: nil)
     raise 'Transaction cannot have both credit and debit' if credit && debit
 
     raise 'Transaction must have credit or debit' unless credit || debit
@@ -18,6 +18,8 @@ class Transaction
   private
 
   def calculate_new_balance(previous_balance, credit, debit)
-    previous_balance + credit if credit
+    return previous_balance + credit if credit
+
+    previous_balance - debit
   end
 end
