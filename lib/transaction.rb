@@ -21,8 +21,6 @@ class Transaction
   end
 
   def calculate_new_balance(previous_balance, credit, debit)
-    return previous_balance + credit if credit
-
-    previous_balance - debit
+    previous_balance + credit.to_i - debit.to_i
   end
 end
