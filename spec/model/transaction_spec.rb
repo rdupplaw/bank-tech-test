@@ -4,7 +4,7 @@ require 'transaction'
 
 describe Transaction do
   context 'when given a credit' do
-    subject(:credit_transaction) { described_class.new(date: '10-01-2012', credit: 1000) }
+    subject(:credit_transaction) { described_class.new(date: '10-01-2012', credit: 1000, previous_balance: 630) }
 
     it 'has a date' do
       expect(credit_transaction.date).to eq('10-01-2012')
@@ -13,10 +13,14 @@ describe Transaction do
     it 'has a credit' do
       expect(credit_transaction.credit).to eq(1000)
     end
+
+    it 'has a balance which is equal to given previous balance plus credit' do
+      expect(credit_transaction.balance).to eq(1630)
+    end
   end
 
   context 'when given a debit' do
-    subject(:debit_transaction) { described_class.new(date: '03-11-2016', debit: 500) }
+    subject(:debit_transaction) { described_class.new(date: '03-11-2016', debit: 500, previous_balance: -310) }
 
     it 'has a date' do
       expect(debit_transaction.date).to eq('03-11-2016')
@@ -29,11 +33,11 @@ describe Transaction do
 
   it 'raises an error if given both credit and debit' do
     expect do
-      described_class.new(date: '13-05-2022', credit: 2000, debit: 9000)
+      described_class.new(date: '13-05-2022', credit: 2000, debit: 9000, previous_balance: 0)
     end.to raise_error 'Transaction cannot have both credit and debit'
   end
 
   it 'raises an error if not given credit or debit' do
-    expect { described_class.new(date: '27-03-1994') }.to raise_error 'Transaction must have credit or debit'
+    expect { described_class.new(date: '27-03-1994', previous_balance: 0) }.to raise_error 'Transaction must have credit or debit'
   end
 end
