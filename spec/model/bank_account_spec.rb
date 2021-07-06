@@ -8,7 +8,7 @@ describe BankAccount do
   let(:transaction_double) { instance_double('BankTransaction') }
 
   describe '#deposit' do
-    it 'creates a new Transaction' do
+    it 'creates a new Transaction with a credit' do
       bank_account = described_class.new(transaction_class: transaction_class_double)
       allow(transaction_class_double).to receive(:new)
 
@@ -28,6 +28,18 @@ describe BankAccount do
 
       expect(transaction_class_double).to have_received(:new)
         .with(date: '13-08-2011', credit: 204, previous_balance: 2585)
+    end
+  end
+
+  describe '#withdraw' do
+    it 'creates a new Transaction with a debit' do
+      bank_account = described_class.new(transaction_class: transaction_class_double)
+      allow(transaction_class_double).to receive(:new)
+
+      bank_account.withdraw(400, '20-01-1999')
+
+      expect(transaction_class_double).to have_received(:new)
+        .with(date: '20-01-1999', debit: 400, previous_balance: 0)
     end
   end
 end
