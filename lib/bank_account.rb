@@ -14,7 +14,7 @@ class BankAccount
   end
 
   def withdraw(debit, date)
-    @transaction_class.new(date: date, debit: debit, previous_balance: 0)
+    @transactions << @transaction_class.new(date: date, debit: debit, previous_balance: previous_balance)
   end
 
   private
