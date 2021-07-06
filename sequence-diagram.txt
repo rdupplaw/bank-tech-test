@@ -1,0 +1,33 @@
+@startuml
+participant User as user
+participant "a BankAccount" as account
+participant BankTransaction as transactionclass
+participant "a BankAccountStatementGenerator" as statementgen
+participant "a BankTransaction" as transaction
+user -> account : deposit(1000, '10-01-2012')
+account -> transactionclass : new(date: '10-01-2012', credit: 1000, previous_balance: 0)
+transactionclass --> account :
+account --> user :
+user -> account : deposit(2000, '13-01-2012')
+account -> transactionclass : new(date: '13-01-2012', credit: 2000, previous_balance: 1000)
+transactionclass --> account :
+account --> user :
+user -> account : withdraw(500, '14-01-2012')
+account -> transactionclass : new(date: '14-01-2012', debit: 500, previous_balance: 3000)
+transactionclass --> account :
+account --> user :
+user -> account : statement
+account -> statementgen : generate_statement(transactions)
+loop for each transaction
+    statementgen -> transaction : transaction.date
+    transaction --> statementgen :
+    statementgen -> transaction : transaction.credit
+    transaction --> statementgen :
+    statementgen -> transaction : transaction.debit
+    transaction --> statementgen :
+    statementgen -> transaction : transaction.balance
+    transaction --> statementgen :
+end
+statementgen --> account :
+account --> user :
+@enduml
