@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'bank_account'
-require 'bank_transaction' # Required for verifying class double
+require 'bank_transaction' # Required for verifying class double and instance doubles
+require 'bank_account_statement_generator' # Required for verifying instance doubles
 
 describe BankAccount do
   let(:transaction_class_double) { class_double('BankTransaction') }
   let(:transaction_double) { instance_double('BankTransaction') }
+  let(:statement_generator_double) { instance_double('BankAccountStatementGenerator') }
 
   describe '#deposit' do
     it 'creates a new Transaction with a credit' do
@@ -52,6 +54,23 @@ describe BankAccount do
 
       expect(transaction_class_double).to have_received(:new)
         .with(date: '07-08-2017', debit: 307, previous_balance: 1273)
+    end
+  end
+
+  describe '#statement' do
+    it 'calls statement generator with stored transactions' do
+      bank_account = described_class.new(transaction_class: transaction_class_double,
+                                         statement_generator: statement_generator_double)
+      allow(transaction_class_double).to receive(:new).and_return(transaction_double)
+      allow(transaction_double).to receive(:balance).and_return(1273)
+      allow(statement_generator_double).to receive(:generate_statement)
+
+      bank_account.deposit(100, '12-08-2011')
+      bank_account.withdraw(307, '07-08-2017')
+      bank_account.statement
+
+      expect(statement_generator_double).to have_received(:generate_statement).with([transaction_double,
+                                                                                     transaction_double])
     end
   end
 end

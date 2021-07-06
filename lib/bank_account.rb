@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'bank_transaction'
+require 'bank_account_statement_generator'
 
 # Controls bank transactions
 class BankAccount
-  def initialize(transaction_class: BankTransaction)
+  def initialize(transaction_class: BankTransaction, statement_generator: BankAccountStatementGenerator.new)
     @transaction_class = transaction_class
+    @statement_generator = statement_generator
     @transactions = []
   end
 
@@ -15,6 +17,10 @@ class BankAccount
 
   def withdraw(debit, date)
     @transactions << @transaction_class.new(date: date, debit: debit, previous_balance: previous_balance)
+  end
+
+  def statement
+    @statement_generator.generate_statement(@transactions)
   end
 
   private
