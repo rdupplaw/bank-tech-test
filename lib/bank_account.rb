@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'bank_transaction'
-require 'bank_account_statement_generator'
+require_relative 'bank_transaction'
+require_relative 'bank_account_statement_generator'
 
 # Controls bank transactions
 class BankAccount
